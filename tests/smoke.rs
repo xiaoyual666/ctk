@@ -75,6 +75,54 @@ fn find_groups_matches() {
 }
 
 #[test]
+fn deps_summarizes_cargo_project() {
+    let dir = temp_dir("deps-cargo");
+    fs::write(
+        dir.join("Cargo.toml"),
+        r#"[package]
+name = "demo"
+version = "0.1.0"
+
+[dependencies]
+clap = "4"
+serde = { version = "1" }
+
+[dev-dependencies]
+tempfile = "3"
+"#,
+    )
+    .expect("write");
+
+    let output = Command::new(env!("CARGO_BIN_EXE_ctk"))
+        .args(["deps", dir.to_str().expect("path")])
+        .output()
+        .expect("run");
+
+    assert!(output.status.success());
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    assert!(stdout.contains("Rust: demo @ 0.1.0"));
+    assert!(stdout.contains("clap 4"));
+    assert!(stdout.contains("tempfile 3"));
+}
+
+#[test]
+fn ls_supports_all_and_long_flags() {
+    let dir = temp_dir("ls-all-long");
+    fs::write(dir.join(".secret"), "x").expect("write hidden");
+    fs::write(dir.join("visible.txt"), "hello").expect("write visible");
+
+    let output = Command::new(env!("CARGO_BIN_EXE_ctk"))
+        .args(["ls", "-la", dir.to_str().expect("path")])
+        .output()
+        .expect("run");
+
+    assert!(output.status.success());
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    assert!(stdout.contains(".secret"));
+    assert!(stdout.contains("visible.txt 5B"));
+}
+
+#[test]
 fn git_status_uses_machine_friendly_format() {
     let dir = temp_dir("git-status");
     Command::new("git")

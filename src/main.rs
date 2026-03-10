@@ -22,8 +22,14 @@ enum Commands {
         args: Vec<String>,
     },
     Ls {
-        #[arg(default_value = ".")]
-        path: String,
+        #[arg(short = 'a', long = "all", action = ArgAction::SetTrue)]
+        all: bool,
+        #[arg(short = 'l', long = "long", action = ArgAction::SetTrue)]
+        long: bool,
+        #[arg(short = 'R', long = "recursive", action = ArgAction::SetTrue)]
+        recursive: bool,
+        #[arg(num_args = 0..)]
+        paths: Vec<String>,
         #[arg(long, default_value_t = 2)]
         max_depth: usize,
         #[arg(long, default_value_t = 12)]
@@ -60,6 +66,10 @@ enum Commands {
         #[arg(long, default_value_t = 50)]
         max_results: usize,
     },
+    Deps {
+        #[arg(default_value = ".")]
+        path: String,
+    },
     Test {
         #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
         cmd: Vec<String>,
@@ -88,10 +98,13 @@ fn main() {
         Commands::Git { args } => commands::git::handle(args),
         Commands::Gh { args } => commands::gh::handle(args),
         Commands::Ls {
-            path,
+            all,
+            long,
+            recursive,
+            paths,
             max_depth,
             max_entries,
-        } => commands::ls::handle(path, max_depth, max_entries),
+        } => commands::ls::handle(paths, all, long, recursive, max_depth, max_entries),
         Commands::Read {
             path,
             max_lines,
@@ -121,6 +134,7 @@ fn main() {
             path,
             max_results,
         } => commands::find::handle(pattern, path, max_results),
+        Commands::Deps { path } => commands::deps::handle(path),
         Commands::Test { cmd } => commands::test::handle(cmd),
         Commands::Err { cmd } => commands::err::handle(cmd),
         Commands::Log { path, max_lines } => commands::log::handle(path, max_lines),

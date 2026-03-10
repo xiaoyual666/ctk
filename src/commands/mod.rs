@@ -1,3 +1,4 @@
+pub mod deps;
 pub mod err;
 pub mod find;
 pub mod gh;

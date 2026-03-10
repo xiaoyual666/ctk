@@ -14,10 +14,11 @@ Every recommended command starts with `ctk`.
 - `git log -L :handle:src/main.rs` -> `ctk git log -L :handle:src/main.rs`
 - `git show HEAD~1` -> `ctk git show HEAD~1`
 - `git show HEAD:src/main.rs` -> `ctk git show HEAD:src/main.rs`
-- `ls -la` -> `ctk ls .`
+- `ls -la` -> `ctk ls -la .`
 - `cat path/to/file` -> `ctk read path/to/file`
 - `rg "pattern" src` -> `ctk grep "pattern" src`
 - `find . -name "*.rs"` -> `ctk find "*.rs" .`
+- `cat Cargo.toml` or `cat package.json` for dependency inspection -> `ctk deps`
 - `cargo test` -> `ctk test cargo test`
 - `pytest -q` -> `ctk test pytest -q`
 - `npm test` -> `ctk test npm test`

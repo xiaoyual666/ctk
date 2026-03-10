@@ -13,14 +13,14 @@ Use `ctk` as the default command prefix for routine development workflows in rep
 
 1. Confirm `ctk` is available with `command -v ctk`.
 2. Translate the intended raw command into the nearest `ctk` form.
-3. Use `ctk` first for exploration, git inspection, tests, builds, logs, and JSON structure.
+3. Use `ctk` first for exploration, git inspection, dependency inspection, tests, builds, logs, and JSON structure.
 4. Fall back to raw shell only when `ctk` does not cover the workflow cleanly.
 5. If you need the exact command mapping or examples, read [references/commands.md](references/commands.md).
 
 ## Preferred Commands
 
 - Use `ctk git status`, `ctk git diff`, `ctk git log`, and `ctk git show` before raw `git`.
-- Use `ctk ls`, `ctk read`, `ctk grep`, and `ctk find` for codebase discovery.
+- Use `ctk ls`, `ctk read`, `ctk grep`, `ctk find`, and `ctk deps` for codebase discovery.
 - Use `ctk test <cmd...>` for test runners.
 - Use `ctk err <cmd...>` for build, lint, and compile commands where errors matter more than full logs.
 - Use `ctk log <file>` for log files and `ctk json <file>` for JSON structure.

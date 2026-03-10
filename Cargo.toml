@@ -9,4 +9,5 @@ clap = { version = "4.5.32", features = ["derive"] }
 glob = "0.3.2"
 regex = "1.11.1"
 serde_json = "1.0.145"
+toml = "0.8.20"
 walkdir = "2.5.0"

@@ -5,9 +5,10 @@
 ```bash
 ctk git status
 ctk git diff
-ctk ls .
+ctk ls -la .
 ctk read src/main.rs
 ctk grep "handler" src
+ctk deps
 ctk test cargo test
 ctk err cargo build
 ```
@@ -16,10 +17,11 @@ ctk err cargo build
 
 - `ctk git ...`: compact git status, diff, log, show, and terse mutation confirmations
 - `ctk gh ...`: compact `gh` passthrough when GitHub CLI is installed
-- `ctk ls [path]`: compact tree-style listing
+- `ctk ls [path...]`: compact tree-style listing with `-a`, `-l`, and `-R` compatibility
 - `ctk read <file>`: line-numbered file view, with `--level aggressive` for symbol-heavy views
 - `ctk grep <pattern> [path]`: grouped recursive search
 - `ctk find <pattern> [path]`: grouped glob-style file discovery
+- `ctk deps [path]`: compact dependency summary for Cargo, Node, Python, and Go projects
 - `ctk test <cmd...>`: failure-focused wrapper for noisy test commands
 - `ctk err <cmd...>`: error- and warning-focused wrapper for builds and linters
 - `ctk log <file>`: deduplicated log viewer
@@ -41,10 +43,24 @@ That script:
 - symlinks the project execpolicy rule to `~/.codex/rules/ctk.rules`
 - fails with a clear error if an expected source path is missing or a target path is an unexpected directory
 
+## Uninstall
+
+```bash
+./scripts/uninstall-local.sh
+```
+
+That script:
+
+- removes the cargo-installed `ctk` binary when present
+- removes the installed skill links from `~/.agents/skills/ctk-cli` and `~/.codex/skills/ctk-cli`
+- removes the installed rule link from `~/.codex/rules/ctk.rules`
+- leaves the repository source files untouched
+
 ## Verify
 
 ```bash
 ctk ls .
 ctk read README.md
+ctk deps
 cargo test
 ```
