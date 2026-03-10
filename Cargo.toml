@@ -1,0 +1,12 @@
+[package]
+name = "ctk"
+version = "0.1.0"
+edition = "2024"
+description = "Compact terminal kit for Codex-first workflows"
+
+[dependencies]
+clap = { version = "4.5.32", features = ["derive"] }
+glob = "0.3.2"
+regex = "1.11.1"
+serde_json = "1.0.145"
+walkdir = "2.5.0"

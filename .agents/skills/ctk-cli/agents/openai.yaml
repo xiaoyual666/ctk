@@ -1,0 +1,4 @@
+interface:
+  display_name: "CTK CLI"
+  short_description: "Prefer ctk for compact dev commands"
+  default_prompt: "Use $ctk-cli to choose the right ctk command for compact repository work."
