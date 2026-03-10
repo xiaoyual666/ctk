@@ -3,6 +3,40 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
+warn() {
+  echo "ctk install: warning: $*" >&2
+}
+
+link_path() {
+  local source="$1"
+  local target="$2"
+
+  if [ ! -e "$source" ] && [ ! -L "$source" ]; then
+    warn "source not found, skipping link: $source"
+    return 0
+  fi
+
+  if ! mkdir -p "$(dirname "$target")"; then
+    warn "failed to create parent directory for $target, skipping link"
+    return 0
+  fi
+
+  if [ -d "$target" ] && [ ! -L "$target" ]; then
+    warn "target exists as a directory, refusing to replace it: $target"
+    return 0
+  fi
+
+  if ! rm -f "$target"; then
+    warn "failed to remove existing target, skipping link: $target"
+    return 0
+  fi
+  if ln -s "$source" "$target"; then
+    echo "linked: $target -> $source"
+  else
+    warn "failed to create link: $target -> $source"
+  fi
+}
+
 ensure_rust_toolchain() {
   if command -v cargo >/dev/null 2>&1; then
     return
@@ -40,13 +74,10 @@ ensure_rust_toolchain
 cargo install --path "$ROOT" --force
 echo "installed: ctk via cargo"
 
-mkdir -p "$HOME/.agents/skills"
-rm -f "$HOME/.agents/skills/ctk-cli"
-ln -sfn "$ROOT/.agents/skills/ctk-cli" "$HOME/.agents/skills/ctk-cli"
-echo "linked: $HOME/.agents/skills/ctk-cli -> $ROOT/.agents/skills/ctk-cli"
+link_path "$ROOT/.agents/skills/ctk-cli" "$HOME/.agents/skills/ctk-cli"
 
 # Compatibility for local Codex harnesses that still scan ~/.codex/skills.
-mkdir -p "$HOME/.codex/skills"
-rm -f "$HOME/.codex/skills/ctk-cli"
-ln -sfn "$ROOT/.agents/skills/ctk-cli" "$HOME/.codex/skills/ctk-cli"
-echo "linked: $HOME/.codex/skills/ctk-cli -> $ROOT/.agents/skills/ctk-cli"
+link_path "$ROOT/.agents/skills/ctk-cli" "$HOME/.codex/skills/ctk-cli"
+
+# Install the project-local Codex execpolicy rule that nudges bare git usage to ctk git.
+link_path "$ROOT/.codex/rules/ctk.rules" "$HOME/.codex/rules/ctk.rules"

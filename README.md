@@ -38,6 +38,8 @@ That script:
 - runs `cargo install --path . --force`
 - symlinks the local skill to `~/.agents/skills/ctk-cli`
 - also creates a compatibility link at `~/.codex/skills/ctk-cli` for older local Codex harnesses
+- symlinks the project execpolicy rule to `~/.codex/rules/ctk.rules`
+- fails with a clear error if an expected source path is missing or a target path is an unexpected directory
 
 ## Verify
 

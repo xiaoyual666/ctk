@@ -1,0 +1,14 @@
+prefix_rule(
+    pattern=["git"],
+    decision="prompt",
+    justification="Use `ctk git ...` instead of bare `git` in this repository unless CTK truly cannot express the workflow.",
+    match=[
+        "git status",
+        "git diff HEAD~1..HEAD -- src/main.rs",
+        "git show HEAD:src/main.rs",
+    ],
+    not_match=[
+        "ctk git status",
+        "ctk git diff HEAD~1..HEAD -- src/main.rs",
+    ],
+)
