@@ -7,6 +7,7 @@ ctk git status
 ctk git diff
 ctk ls -la .
 ctk read src/main.rs
+ctk sed -n '1,80p' src/main.rs
 ctk grep "handler" src
 ctk deps
 ctk test cargo test
@@ -19,6 +20,7 @@ ctk err cargo build
 - `ctk gh ...`: compact `gh` passthrough when GitHub CLI is installed
 - `ctk ls [path...]`: compact tree-style listing with `-a`, `-l`, and `-R` compatibility
 - `ctk read <file>`: line-numbered file view, with `--level aggressive` for symbol-heavy views
+- `ctk sed -n 'start,endp' <file>`: read-only sed compatibility for exact line-range extraction
 - `ctk grep <pattern> [path]`: grouped recursive search
 - `ctk find <pattern> [path]`: grouped glob-style file discovery
 - `ctk deps [path]`: compact dependency summary for Cargo, Node, Python, and Go projects
@@ -61,6 +63,7 @@ That script:
 ```bash
 ctk ls .
 ctk read README.md
+ctk sed -n '1,40p' README.md
 ctk deps
 cargo test
 ```

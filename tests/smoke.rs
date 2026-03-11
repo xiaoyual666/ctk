@@ -57,6 +57,38 @@ fn read_aggressive_keeps_symbols() {
 }
 
 #[test]
+fn sed_extracts_line_range_exactly() {
+    let dir = temp_dir("sed-range");
+    let file = dir.join("sample.txt");
+    fs::write(&file, "one\ntwo\nthree\nfour\n").expect("write");
+
+    let output = Command::new(env!("CARGO_BIN_EXE_ctk"))
+        .args(["sed", "-n", "2,3p", file.to_str().expect("path")])
+        .output()
+        .expect("run");
+
+    assert!(output.status.success());
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    assert_eq!(stdout, "two\nthree\n");
+}
+
+#[test]
+fn sed_requires_read_only_print_shape() {
+    let dir = temp_dir("sed-unsupported");
+    let file = dir.join("sample.txt");
+    fs::write(&file, "one\ntwo\n").expect("write");
+
+    let output = Command::new(env!("CARGO_BIN_EXE_ctk"))
+        .args(["sed", "s/one/two/", file.to_str().expect("path")])
+        .output()
+        .expect("run");
+
+    assert!(!output.status.success());
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    assert!(stderr.contains("only read-only print expressions"));
+}
+
+#[test]
 fn find_groups_matches() {
     let dir = temp_dir("find");
     let src = dir.join("src");

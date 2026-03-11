@@ -9,4 +9,5 @@ pub mod log;
 pub mod ls;
 pub mod read;
 pub mod run;
+pub mod sed;
 pub mod test;

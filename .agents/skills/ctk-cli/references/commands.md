@@ -16,6 +16,8 @@ Every recommended command starts with `ctk`.
 - `git show HEAD:src/main.rs` -> `ctk git show HEAD:src/main.rs`
 - `ls -la` -> `ctk ls -la .`
 - `cat path/to/file` -> `ctk read path/to/file`
+- `sed -n '1,200p' path/to/file` -> `ctk sed -n '1,200p' path/to/file`
+- `sed -n '200,$p' path/to/file` -> `ctk sed -n '200,$p' path/to/file`
 - `rg "pattern" src` -> `ctk grep "pattern" src`
 - `find . -name "*.rs"` -> `ctk find "*.rs" .`
 - `cat Cargo.toml` or `cat package.json` for dependency inspection -> `ctk deps`
@@ -31,7 +33,7 @@ Every recommended command starts with `ctk`.
 
 - Use `ctk git ...` for git inspection and terse mutation confirmations.
 - Use `ctk git ...` even for exact blob/diff/history forms when the command is representable; some precision-sensitive forms passthrough raw output unchanged.
-- Use `ctk ls`, `ctk read`, `ctk grep`, and `ctk find` for repository exploration.
+- Use `ctk ls`, `ctk read`, `ctk sed`, `ctk grep`, and `ctk find` for repository exploration.
 - Use `ctk test <cmd...>` when the raw command is mainly useful for pass/fail and failure context.
 - Use `ctk err <cmd...>` when warnings and errors matter more than full progress logs.
 - Use `ctk run <cmd...>` only as a fallback wrapper when no narrower `ctk` subcommand exists.

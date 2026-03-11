@@ -42,6 +42,13 @@ enum Commands {
         #[arg(short = 'l', long, default_value = "normal")]
         level: String,
     },
+    Sed {
+        #[arg(short = 'n', action = ArgAction::SetTrue)]
+        quiet: bool,
+        script: String,
+        #[arg(num_args = 0..)]
+        files: Vec<String>,
+    },
     Grep {
         #[arg(short = 'n', long = "line-number", action = ArgAction::SetTrue)]
         line_number: bool,
@@ -110,6 +117,11 @@ fn main() {
             max_lines,
             level,
         } => commands::read::handle(path, max_lines, level),
+        Commands::Sed {
+            quiet,
+            script,
+            files,
+        } => commands::sed::handle(quiet, script, files),
         Commands::Grep {
             line_number,
             recursive,
